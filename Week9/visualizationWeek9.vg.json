@@ -72,8 +72,8 @@
     {
       "name": "color",
       "type": "threshold",
-      "domain": [0, 3, 5],
-      "range": ["#fdbe85", "#fd8d3c", "#e6550d", "#a63603"],
+      "domain": [3, 5],
+      "range": ["#fd8d3c", "#e6550d", "#a63603"],
       "interpolate": "hcl"
     }
   ],
