@@ -1,0 +1,109 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "width": 800,
+  "height": 600,
+  "title": {
+    "text": "Homicide Rates per 10,000 people by country",
+    "frame": "group"
+  },
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_1",
+      "url": "https://raw.githubusercontent.com/Tricia-wijaya/FIT3179/main/Week9/HomicideData.csv",
+      "format": {"type": "csv", "delimiter": ","}
+    },
+    {
+      "name": "source_0",
+      "url": "https://raw.githubusercontent.com/Tricia-wijaya/FIT3179/main/Week9/countries.geo.topojson",
+      "format": {"type": "topojson", "feature": "custom", "parse": {}},
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "datum[\"properties\"] && datum[\"properties\"][\"name\"]",
+          "as": "properties.name"
+        }
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "lookup",
+          "from": "source_1",
+          "key": "Country",
+          "fields": ["properties.name"],
+          "values": ["Rate"]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"Rate\"]) && isFinite(+datum[\"Rate\"])"
+        }
+      ]
+    }
+  ],
+  "projections": [
+    {
+      "name": "projection",
+      "size": {"signal": "[width, height]"},
+      "fit": {"signal": "[data('source_0'), data('data_0')]"},
+      "type": "equalEarth"
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "shape",
+      "style": ["geoshape"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "fill": {"value": "lightgray"},
+          "stroke": {"value": "white"},
+          "ariaRoleDescription": {"value": "geoshape"}
+        }
+      },
+      "transform": [{"type": "geoshape", "projection": "projection"}]
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "shape",
+      "style": ["geoshape"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "fill": {"scale": "color", "field": "Rate"},
+          "tooltip": {
+            "signal": "{\"Country\": isValid(datum[\"properties.name\"]) ? datum[\"properties.name\"] : \"\"+datum[\"properties.name\"], \"Rate\": format(datum[\"Rate\"], \"\")}"
+          },
+          "ariaRoleDescription": {"value": "geoshape"},
+          "description": {
+            "signal": "\"Rate: \" + (format(datum[\"Rate\"], \"\")) + \"; Country: \" + (isValid(datum[\"properties.name\"]) ? datum[\"properties.name\"] : \"\"+datum[\"properties.name\"])"
+          }
+        }
+      },
+      "transform": [{"type": "geoshape", "projection": "projection"}]
+    }
+  ],
+  "scales": [
+    {
+      "name": "color",
+      "type": "threshold",
+      "domain": [0.5, 3, 5, 10],
+      "range": ["#feedde", "#fdbe85", "#fd8d3c", "#d94701", "#a63603"],
+      "interpolate": "hcl"
+    }
+  ],
+  "legends": [
+    {
+      "fill": "color",
+      "labelOverlap": "greedy",
+      "symbolType": "circle",
+      "title": "Rate"
+    }
+  ],
+  "config": {}
+}
