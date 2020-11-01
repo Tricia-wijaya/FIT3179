@@ -1,0 +1,320 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "width": 500,
+  "height": 300,
+  "title": {
+    "text": "Homicide Rate from 2004-2015",
+    "anchor": "middle",
+    "frame": "group"
+  },
+  "style": "cell",
+  "data": [
+    {"name": "hover_store"},
+    {
+      "name": "source_0",
+      "url": "https://raw.githubusercontent.com/Tricia-wijaya/FIT3179/main/Assignment/HomicideGrowth.csv",
+      "format": {"type": "csv", "parse": {"Year": "date"}, "delimiter": ","},
+      "transform": [{"type": "filter", "expr": "datum.Continent!=='IBM'"}]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "pivot",
+          "field": "Continent",
+          "value": "Rate",
+          "groupby": ["Year"]
+        },
+        {"type": "formula", "expr": "toDate(datum[\"Year\"])", "as": "Year"},
+        {
+          "field": "Year",
+          "type": "timeunit",
+          "units": ["year"],
+          "as": ["year_Year", "year_Year_end"]
+        },
+        {
+          "type": "filter",
+          "expr": "(isDate(datum[\"Year\"]) || (isValid(datum[\"Year\"]) && isFinite(+datum[\"Year\"])))"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {"type": "filter", "expr": "(vlSelectionTest(\"hover_store\", datum))"},
+        {
+          "type": "filter",
+          "expr": "(isDate(datum[\"Year\"]) || (isValid(datum[\"Year\"]) && isFinite(+datum[\"Year\"]))) && isValid(datum[\"Rate\"]) && isFinite(+datum[\"Rate\"])"
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {
+      "name": "unit",
+      "value": {},
+      "on": [
+        {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
+      ]
+    },
+    {
+      "name": "hover",
+      "update": "vlSelectionResolve(\"hover_store\", \"union\")"
+    },
+    {
+      "name": "hover_tuple",
+      "on": [
+        {
+          "events": [
+            {
+              "source": "scope",
+              "type": "mouseover",
+              "markname": "layer_1_voronoi"
+            }
+          ],
+          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_1\", fields: hover_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"Year\"]]} : null",
+          "force": true
+        },
+        {"events": [{"source": "scope", "type": "mouseout"}], "update": "null"}
+      ]
+    },
+    {"name": "hover_tuple_fields", "value": [{"type": "E", "field": "Year"}]},
+    {
+      "name": "hover_modify",
+      "on": [
+        {
+          "events": {"signal": "hover_tuple"},
+          "update": "modify(\"hover_store\", hover_tuple, true)"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_layer_0_pathgroup",
+      "type": "group",
+      "from": {
+        "facet": {
+          "name": "faceted_path_layer_0_layer_0_main",
+          "data": "source_0",
+          "groupby": ["Continent"]
+        }
+      },
+      "encode": {
+        "update": {
+          "width": {"field": {"group": "width"}},
+          "height": {"field": {"group": "height"}}
+        }
+      },
+      "marks": [
+        {
+          "name": "layer_0_layer_0_marks",
+          "type": "line",
+          "style": ["line"],
+          "sort": {"field": "datum[\"Year\"]"},
+          "interactive": false,
+          "from": {"data": "faceted_path_layer_0_layer_0_main"},
+          "encode": {
+            "update": {
+              "stroke": {"scale": "color", "field": "Continent"},
+              "description": {
+                "signal": "\"Year: \" + (timeFormat(datum[\"Year\"], '%b %d, %Y')) + \"; Continent: \" + (isValid(datum[\"Continent\"]) ? datum[\"Continent\"] : \"\"+datum[\"Continent\"]) + \"; Homicide Rate: \" + (format(datum[\"Rate\"], \"\"))"
+              },
+              "x": {"scale": "x", "field": "Year"},
+              "y": {"scale": "y", "field": "Rate"},
+              "defined": {
+                "signal": "isValid(datum[\"Year\"]) && isFinite(+datum[\"Year\"]) && isValid(datum[\"Rate\"]) && isFinite(+datum[\"Rate\"])"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "layer_0_layer_1_marks",
+      "type": "symbol",
+      "style": ["point"],
+      "interactive": false,
+      "from": {"data": "data_1"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.7},
+          "fill": {"value": "transparent"},
+          "stroke": {"scale": "color", "field": "Continent"},
+          "ariaRoleDescription": {"value": "point"},
+          "description": {
+            "signal": "\"Year: \" + (timeFormat(datum[\"Year\"], '%b %d, %Y')) + \"; Continent: \" + (isValid(datum[\"Continent\"]) ? datum[\"Continent\"] : \"\"+datum[\"Continent\"]) + \"; Homicide Rate: \" + (format(datum[\"Rate\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "Year"},
+          "y": {"scale": "y", "field": "Rate"}
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "rule",
+      "style": ["rule"],
+      "interactive": true,
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "black"},
+          "opacity": [
+            {"test": "(vlSelectionTest(\"hover_store\", datum))", "value": 0.3},
+            {"value": 0}
+          ],
+          "tooltip": {
+            "signal": "{\"Africa\": format(datum[\"Africa\"], \"\"), \"America\": format(datum[\"America\"], \"\"), \"Asia\": format(datum[\"Asia\"], \"\"), \"World\": format(datum[\"World\"], \"\"), \"Oceanie\": format(datum[\"Oceanie\"], \"\"), \"Australia\": format(datum[\"Australia\"], \"\"), \"Year\": timeFormat(datum[\"year_Year\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))}"
+          },
+          "description": {
+            "signal": "\"Year: \" + (timeFormat(datum[\"Year\"], '%b %d, %Y')) + \"; Africa: \" + (format(datum[\"Africa\"], \"\")) + \"; America: \" + (format(datum[\"America\"], \"\")) + \"; Asia: \" + (format(datum[\"Asia\"], \"\")) + \"; World: \" + (format(datum[\"World\"], \"\")) + \"; Oceanie: \" + (format(datum[\"Oceanie\"], \"\")) + \"; Australia: \" + (format(datum[\"Australia\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "Year"},
+          "y": {"value": 0},
+          "y2": {"field": {"group": "height"}}
+        }
+      }
+    },
+    {
+      "name": "layer_1_voronoi",
+      "type": "path",
+      "interactive": true,
+      "from": {"data": "layer_1_marks"},
+      "encode": {
+        "update": {
+          "fill": {"value": "transparent"},
+          "strokeWidth": {"value": 0.35},
+          "stroke": {"value": "transparent"},
+          "isVoronoi": {"value": true},
+          "tooltip": {
+            "signal": "{\"Africa\": format(datum.datum[\"Africa\"], \"\"), \"America\": format(datum.datum[\"America\"], \"\"), \"Asia\": format(datum.datum[\"Asia\"], \"\"), \"World\": format(datum.datum[\"World\"], \"\"), \"Oceanie\": format(datum.datum[\"Oceanie\"], \"\"), \"Australia\": format(datum.datum[\"Australia\"], \"\"), \"Year\": timeFormat(datum.datum[\"year_Year\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))}"
+          }
+        }
+      },
+      "transform": [
+        {
+          "type": "voronoi",
+          "x": {"expr": "datum.datum.x || 0"},
+          "y": {"expr": "datum.datum.y || 0"},
+          "size": [{"signal": "width"}, {"signal": "height"}]
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "time",
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "Year"},
+          {"data": "data_1", "field": "Year"},
+          {"data": "data_0", "field": "Year"}
+        ]
+      },
+      "range": [0, {"signal": "width"}]
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "Rate"},
+          {"data": "data_1", "field": "Rate"}
+        ]
+      },
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": [
+        "America",
+        "Europe",
+        "Africa",
+        "Asia",
+        "Oceanie",
+        "World",
+        "Australia"
+      ],
+      "range": [
+        "#ff7f00",
+        "#DEB887",
+        "#377eb8",
+        "#a65628",
+        "#800080",
+        "#008080",
+        "#FF3345"
+      ]
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Homicide Rate",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ],
+  "legends": [
+    {
+      "stroke": "color",
+      "symbolType": "circle",
+      "encode": {
+        "symbols": {
+          "update": {
+            "fill": {"value": "transparent"},
+            "opacity": {"value": 0.7}
+          }
+        }
+      }
+    }
+  ],
+  "config": {}
+}
