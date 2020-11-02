@@ -2,8 +2,8 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
   "padding": 5,
-  "width": 500,
-  "height": 600,
+  "width": 450,
+  "height": 450,
   "title": {"text": "Crime rate per country in 2020", "frame": "group"},
   "style": "cell",
   "data": [
