@@ -1,0 +1,153 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "title": {"text": "Homicide Rate by Age and Gender", "anchor": "middle"},
+  "data": {
+    "url": "https://raw.githubusercontent.com/Tricia-wijaya/FIT3179/main/Assignment/age-sex-rv.csv"
+  },
+  "transform": [
+    {"calculate": "datum.sex == 2 ? 'Female' : 'Male'", "as": "gender"}
+  ],
+  "spacing": 0,
+  "hconcat": [
+    {
+      "layer": [
+        {
+          "width": 250,
+          "transform": [{"filter": {"field": "gender", "equal": "Female"}}],
+          "title": "Female",
+          "mark": "bar",
+          "encoding": {
+            "y": {"field": "age", "axis": null, "sort": "descending"},
+            "x": {"aggregate": "sum", "field": "value", "sort": "descending"},
+            "color": {
+              "field": "female",
+              "type": "nominal",
+              "scale": {"range": ["#4682b4", "#4682b4"]},
+              "legend": null
+            },
+            "tooltip": [
+              {"field": "gender", "type": "nominal", "title": "Gender"},
+              {
+                "aggregate": "sum",
+                "field": "value",
+                "type": "quantitative",
+                "format": ",",
+                "title": "Homicide Rate"
+              },
+              {"field": "age", "type": "ordinal", "title": "Age"}
+            ]
+          }
+        },
+        {
+          "transform": [{"filter": {"field": "gender", "equal": "Female"}}],
+          "mark": {"type": "text", "align": "right", "dx": -5},
+          "encoding": {
+            "y": {
+              "field": "age",
+              "title": null,
+              "axis": null,
+              "sort": "descending"
+            },
+            "x": {
+              "aggregate": "sum",
+              "field": "value",
+              "title": "Homicide rate",
+              "axis": {"format": "s"},
+              "scale": {"domain": [0, 15]}
+            },
+            "key": {"field": "age"},
+            "text": {
+              "aggregate": "sum",
+              "field": "value",
+              "type": "ordinal",
+              "format": ","
+            }
+          }
+        },
+        {
+          "width": 35,
+          "view": {"stroke": null},
+          "mark": {"type": "text", "align": "center", "dx": 155},
+          "encoding": {
+            "y": {
+              "field": "age",
+              "type": "ordinal",
+              "axis": null,
+              "sort": "descending"
+            },
+            "text": {"field": "age", "type": "ordinal"}
+          }
+        }
+      ]
+    },
+    {
+      "width": 10,
+      "view": {"stroke": null},
+      "mark": {"type": "text", "align": "center"}
+    },
+    {
+      "layer": [
+        {
+          "width": 250,
+          "transform": [{"filter": {"field": "gender", "equal": "Male"}}],
+          "title": "Male",
+          "mark": "bar",
+          "encoding": {
+            "y": {
+              "field": "age",
+              "title": null,
+              "axis": null,
+              "sort": "descending"
+            },
+            "x": {
+              "aggregate": "sum",
+              "field": "value",
+              "title": "Homicide rate",
+              "axis": {"format": "s"},
+              "scale": {"domain": [1, 17]}
+            },
+            "color": {"field": "gender", "legend": null},
+            "tooltip": [
+              {"field": "gender", "type": "nominal", "title": "Gender"},
+              {
+                "aggregate": "sum",
+                "field": "value",
+                "type": "quantitative",
+                "format": ",",
+                "title": "Homicide Rate"
+              },
+              {"field": "age", "type": "ordinal", "title": "Age"}
+            ]
+          }
+        },
+        {
+          "transform": [{"filter": {"field": "gender", "equal": "Male"}}],
+          "mark": {"type": "text", "align": "left", "dx": 5},
+          "encoding": {
+            "y": {
+              "field": "age",
+              "title": null,
+              "axis": null,
+              "sort": "descending"
+            },
+            "x": {
+              "aggregate": "sum",
+              "field": "value",
+              "title": "Homicide rate",
+              "axis": {"format": "s"},
+              "scale": {"domain": [0, 15]}
+            },
+            "key": {"field": "age"},
+            "text": {
+              "aggregate": "sum",
+              "field": "value",
+              "type": "ordinal",
+              "format": ","
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "config": {}
+}

@@ -1,0 +1,80 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "data": {
+    "url": "https://raw.githubusercontent.com/Tricia-wijaya/FIT3179/main/Assignment/HomicideGrowth.csv"
+  },
+  "title": {"text": "Homicide Rate from 2004-2015", "anchor": "middle"},
+  "width": 450,
+  "height": 300,
+  "transform": [{"filter": "datum.Continent!=='IBM'"}],
+  "encoding": {"x": {"field": "Year", "type": "temporal", "title": null}},
+  "layer": [
+    {
+      "encoding": {
+        "color": {
+          "field": "Continent",
+          "type": "nominal",
+          "legend": {"orient": "bottom"},
+          "title": null,
+          "scale": {
+            "domain": [
+              "America",
+              "Europe",
+              "Africa",
+              "Asia",
+              "Oceanie",
+              "World",
+              "Australia"
+            ],
+            "range": [
+              "#00bfff",
+              "#2f4b7c",
+              "#665191",
+              "#d45087",
+              "#ff7c43",
+              "#008080",
+              "#FF3345"
+            ]
+          }
+        },
+        "y": {"field": "Rate", "type": "quantitative", "title": "Homicide Rate"}
+      },
+      "layer": [
+        {"mark": "line"},
+        {"transform": [{"filter": {"selection": "hover"}}], "mark": "point"}
+      ]
+    },
+    {
+      "transform": [
+        {"pivot": "Continent", "value": "Rate", "groupby": ["Year"]}
+      ],
+      "mark": "rule",
+      "encoding": {
+        "opacity": {
+          "condition": {"value": 0.3, "selection": "hover"},
+          "value": 0
+        },
+        "tooltip": [
+          {"field": "Africa", "type": "quantitative"},
+          {"field": "America", "type": "quantitative"},
+          {"field": "Asia", "type": "quantitative"},
+          {"field": "World", "type": "quantitative"},
+          {"field": "Oceanie", "type": "quantitative"},
+          {"field": "Australia", "type": "quantitative"},
+          {"timeUnit": "year", "field": "Year", "title": "Year"}
+        ]
+      },
+      "selection": {
+        "hover": {
+          "type": "single",
+          "fields": ["Year"],
+          "nearest": true,
+          "on": "mouseover",
+          "empty": "none",
+          "clear": "mouseout"
+        }
+      }
+    }
+  ],
+  "config": {}
+}

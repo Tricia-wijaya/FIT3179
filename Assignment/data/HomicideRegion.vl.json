@@ -1,0 +1,50 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "width": 450,
+  "height": 300,
+  "title": {
+    "text": "Homicide Count by Region from 2000-2012",
+    "anchor": "middle"
+  },
+  "data": {
+    "url": "https://raw.githubusercontent.com/Tricia-wijaya/FIT3179/main/Assignment/ContinentHomicide.csv"
+  },
+  "mark": "area",
+  "selection": {
+    "industry": {"type": "multi", "fields": ["Continent"], "bind": "legend"}
+  },
+  "encoding": {
+    "x": {
+      "timeUnit": "year",
+      "field": "Year",
+      "axis": {"format": "%Y"},
+      "title": null
+    },
+    "y": {"aggregate": "sum", "field": "Count", "title": null},
+    "color": {
+      "legend": {"orient": "bottom"},
+      "field": "Continent",
+      "title": "Region",
+      "scale": {
+        "domain": ["America", "Europe", "Africa", "Asia", "Oceanie"],
+        "range": ["#00bfff", "#2f4b7c", "#665191", "#d45087", "#ff7c43"]
+      }
+    },
+    "opacity": {
+      "condition": {"selection": "industry", "value": 1},
+      "value": 0.2
+    },
+    "tooltip": [
+      {"field": "Continent", "type": "nominal", "title": "Region"},
+      {
+        "aggregate": "sum",
+        "field": "Count",
+        "type": "quantitative",
+        "format": ",",
+        "title": "Count of Homicide"
+      },
+      {"timeUnit": "year", "field": "Year", "title": "Year"}
+    ]
+  },
+  "config": {}
+}
