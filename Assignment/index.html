@@ -1,1 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Homicide around the world/title>
+  <!-- Import Vega & Vega-Lite (does not have to be from CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@4"></script>
+  <!-- Import vega-embed -->
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+  <!-- Import pure.css -->
+  <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css" integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ" crossorigin="anonymous">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Google font -->
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700;900&display=swap" rel="stylesheet">
 
+  <!-- custom style -->
+  <style>
+    *{
+      font-family: 'Source Sans Pro', sans-serif;
+    }
+    h1{
+      font-weight: 900;
+      text-align: center;
+    }
+     body{
+       background-color: lightgray;
+     }
+     .page{
+       width: 850px;    
+       background-color: white;   
+       margin: auto;
+       padding: 50px;
+       padding-top: 35px;
+    }
+    .vis-container{
+      width: 100%;
+    }
+    .description h2, h1{
+      margin-top:0px;
+    }
+    .description-right {
+      padding-left: 20px;
+    }
+    .description-left{
+      padding-right: 20px;
+    }
+    .pure-g{
+      margin-bottom: 25px;
+    }
+    .small-font{
+        font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+ <div class="page">
+
+   <!-- pure grid group -->
+    <div class="pure-g">
+      <div class="pure-u-1-1">
+        <h1>Homicide around the world</h1>
+        <p>An insight and visualization of homicides around the world based on several categories and how Australia compares to them.</p>
+      </div>
+    </div>
+  <!-- end pure grid group -->
+
+    <!-- pure grid group -->
+    <div class="pure-g">
+        <div class="pure-u-1-1">
+          <div id="vis3" class="vis-container"></div>
+        </div>
+    </div>
+    <!-- end pure grid group -->
+  
+    <div class="pure-g">
+      <div class="pure-u-1-1 small-font">
+        <p>This visualisation is created by <a href="https://github.com/KadekSatriadi" target="_blank">Kadek Satriadi</a>. The datasource is <a href="#"" target="_blank">some data repository online</href>.</p>
+      </div>
+    </div>
+  
+
+  </div> <!-- end page -->
+   
+<script type="text/javascript">
+          
+  var vis1 = "HomicideAge.vg.json";
+  var vis2 = "HomicideGrowths.vg.json";
+  var vis3 = "HomicideMap.vg.json";
+  var vis4 = "HomicideMechanism.vg.json";    
+  var vis5 = "HomicideRegions.vg.json";
+  var vis6 = "HomicideTop5.vg.json";
+  var vis7 = "Homicidevs.vg.json";
+
+  vegaEmbed('#vis1', vis1, {"actions": false}).then(function(result) {
+    // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+  }).catch(console.error);
+  
+  vegaEmbed('#vis2', vis2, {"actions": false}).then(function(result) {
+    // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+  }).catch(console.error);
+
+  vegaEmbed('#vis3', vis3, {"actions": false}).then(function(result) {
+    // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+  }).catch(console.error);
+
+  vegaEmbed('#vis4', vis4, {"actions": false}).then(function(result) {
+    // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+  }).catch(console.error);
+          
+  vegaEmbed('#vis5', vis5, {"actions": false}).then(function(result) {
+    // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+  }).catch(console.error);
+  
+  vegaEmbed('#vis6', vis6, {"actions": false}).then(function(result) {
+    // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+  }).catch(console.error);
+
+  vegaEmbed('#vis7', vis7, {"actions": false}).then(function(result) {
+    // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+  }).catch(console.error);          
+          
+          
+          
+</script>
+</body>
+</html>
