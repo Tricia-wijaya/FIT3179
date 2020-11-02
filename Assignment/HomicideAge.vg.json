@@ -2,7 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
   "padding": 5,
-  "title": {"text": "Homicide Rate by Age and Gender", "anchor": "middle"},
+  "title": {"text": "", "anchor": "middle"},
   "data": [
     {
       "name": "source_0",
