@@ -14,7 +14,7 @@
     {"name": "industry_store"},
     {
       "name": "source_0",
-      "url": "https://raw.githubusercontent.com/Tricia-wijaya/FIT3179/main/Assignment/ContinentHomicide.csv",
+      "url": "https://raw.githubusercontent.com/Tricia-wijaya/FIT3179/main/Assignment/A2HomicideRegion.csv",
       "format": {"type": "csv", "parse": {"Year": "date"}, "delimiter": ","},
       "transform": [
         {
