@@ -67,11 +67,17 @@
    
     <!-- pure grid group -->
     <div class="pure-g">
-        <div class="pure-u-1-1">
+        <div class="pure-u-2-3">
           <div id="vis3" class="vis-container"></div>
         </div>
     </div>
     <!-- end pure grid group -->
+  
+    <div class="pure-g">
+      <div class="pure-u-1-1 small-font">
+        <p>This visualisation is created by <a href="https://github.com/KadekSatriadi" target="_blank">Kadek Satriadi</a>. The datasource is <a href="#"" target="_blank">some data repository online</href>.</p>
+      </div>
+    </div>
   
 
   </div> <!-- end page -->
@@ -79,12 +85,41 @@
 <script type="text/javascript">
           
   var vis1 = "HomicideAge.vg.json";
+  var vis2 = "HomicideGrowths.vg.json";
+  var vis3 = "HomicideMap.vg.json";
+  var vis4 = "HomicideMechanism.vg.json";    
+  var vis5 = "HomicideRegions.vg.json";
+  var vis6 = "HomicideTop5.vg.json";
+  var vis7 = "Homicidevs.vg.json";
 
   vegaEmbed('#vis1', vis1, {"actions": false}).then(function(result) {
     // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
   }).catch(console.error);
   
+  vegaEmbed('#vis2', vis2, {"actions": false}).then(function(result) {
+    // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+  }).catch(console.error);
 
+  vegaEmbed('#vis3', vis3, {"actions": false}).then(function(result) {
+    // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+  }).catch(console.error);
+
+  vegaEmbed('#vis4', vis4, {"actions": false}).then(function(result) {
+    // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+  }).catch(console.error);
+          
+  vegaEmbed('#vis5', vis5, {"actions": false}).then(function(result) {
+    // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+  }).catch(console.error);
+  
+  vegaEmbed('#vis6', vis6, {"actions": false}).then(function(result) {
+    // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+  }).catch(console.error);
+
+  vegaEmbed('#vis7', vis7, {"actions": false}).then(function(result) {
+    // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+  }).catch(console.error);          
+          
           
           
 </script>
